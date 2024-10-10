@@ -1,0 +1,11 @@
+CREATE TABLE Movies(
+	movies_id INT PRIMARY KEY,
+	title VARCHAR(50),
+	description TEXT,
+	rating DECIMAL(2,1),
+	availability BIT DEFAULT 1,
+	rental_price DECIMAL(6,2),
+	category_id INT,
+	year_of_release INT
+	FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+);

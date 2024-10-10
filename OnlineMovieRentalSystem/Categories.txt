@@ -1,0 +1,6 @@
+CREATE TABLE Categories(
+	category_id INT PRIMARY KEY,
+	genre VARCHAR(100),
+	language VARCHAR(50),
+	year INT
+);
