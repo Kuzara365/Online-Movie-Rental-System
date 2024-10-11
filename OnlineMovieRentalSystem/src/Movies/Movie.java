@@ -1,4 +1,4 @@
-package MovieManagement;
+package Movies;
 
 public class Movie {
 
@@ -91,24 +91,15 @@ public class Movie {
 
     @Override
     public String toString() {
-        return String.format("-------------------------------------------\n"
-                + "| %-15s | %-20d |\n"
-                + "| %-15s | %-20d |\n"
-                + "| %-15s | %-20s |\n"
-                + "| %-15s | %-20s |\n"
-                + "| %-15s | %-20.1f |\n"
-                + "| %-15s | %-20s |\n"
-                + "| %-15s | %-20.2f |\n"
-                + "| %-15s | %-20d |\n"
-                + "-------------------------------------------",
-                "Movie ID", MovieID,
-                "Category ID", categoryID,
-                "Title", title,
-                "Description", description,
-                "Rating", rating,
-                "Availability", availability ? "Available" : "Not Available",
-                "Rental Price", rentalPrice,
-                "Year of Release", yearOfRelease
+        return String.format(
+                "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n"
+                + "| Movie ID   | Title              | Description    | Rating | Availability | Rent Price | CategoryID | Year of Release |\n"
+                + "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n"
+                + "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-10d | %-14d |\n"
+                + "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n",
+                MovieID, title, description, rating,
+                availability ? "Available" : "Not Available",
+                rentalPrice, categoryID, yearOfRelease
         );
     }
 }
