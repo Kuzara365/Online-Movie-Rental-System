@@ -23,8 +23,8 @@ public class ConnectJDBC {
         String userName = "sa";
         String password = "12345";
         String url = "jdbc:sqlserver://" + hostname
-                + ",databaseName=" + SQL_DB
-                + ",trustServerCertificate=true";
+                + ";databaseName=" + SQL_DB
+                + ";trustServerCertificate=true";
 
         try {
             Connection connection = DriverManager.getConnection(url, userName, password);
@@ -32,6 +32,7 @@ public class ConnectJDBC {
             System.out.println("Connect Successfully!!");
         } catch (SQLException ex) {
             System.out.println("Connection Error!!");
+            System.out.println(ex.getMessage());
         }
 
     }
