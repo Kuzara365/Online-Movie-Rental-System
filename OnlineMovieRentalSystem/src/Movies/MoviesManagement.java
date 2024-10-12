@@ -7,7 +7,10 @@ package Movies;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -38,14 +41,14 @@ public class MoviesManagement {
     void printFooter() {
         System.out.println("+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+");
     }
-    
-    //1. create
-    public Movie inputMovie(){
+
+    //1. add
+    public Movie inputMovie() {
         int movieId = inputHelper.readInt("Enter Movie's ID: ");
         String title = inputHelper.readString("Enter Title: ");
         String description = inputHelper.readString("Enter Description: ");
         float rating = inputHelper.readFloat("Enter Rating: ");
-        boolean avail = inputHelper.readBoolean("Enter Status:\n" 
+        boolean avail = inputHelper.readBoolean("Enter Status:\n"
                 + "1. True\n"
                 + "0. False\n"
                 + "Choice: ");
@@ -54,23 +57,49 @@ public class MoviesManagement {
         int yearOfRelease = inputHelper.readInt("Enter Year Of Release: ");
         return new Movie(movieId, CategoryId, title, description, rating, avail, rentalPrice, yearOfRelease);
     }
-    public void insertMovie(Movie m) throws SQLException{
-        Connection connect = JDBC.ConnectJDBC.getConnection();
-        PreparedStatement ps = connect.prepareStatement("INSERT INTO TABLE Movies(movies_id, title, description, rating, availability, rental_price, category_id, year_of_release) VALUES (?, ?, ?, ?, ?, ?, ?");
-        ps.setInt(0, m.getMovieID());
-        ps.setString(1, m.getTitle());
-        ps.setString(2, m.getDescription());
-        ps.setFloat(3, m.getRating());
-        ps.setBoolean(4, m.isAvailability());
-        ps.setInt(5, m.getCategoryID());
-        ps.setInt(6, m.getYearOfRelease());
-        
-        if()
 
+    public void insertMovie(Movie m) {
+        Connection connect = JDBC.ConnectJDBC.getConnection();
+        try {
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO TABLE Movies(movies_id, title, description, rating, availability, rental_price, category_id, year_of_release) VALUES (?, ?, ?, ?, ?, ?, ?");
+            ps.setInt(0, m.getMovieID());
+            ps.setString(1, m.getTitle());
+            ps.setString(2, m.getDescription());
+            ps.setFloat(3, m.getRating());
+            ps.setBoolean(4, m.isAvailability());
+            ps.setInt(5, m.getCategoryID());
+            ps.setInt(6, m.getYearOfRelease());
+
+            int count = ps.executeUpdate();
+            if (count > 0) {
+                System.out.println("Add Movie Successfully!!");
+                System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
+                //show
+            } else {
+                System.out.println("Add FAILED !!");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL error: " + e.getMessage());
+        }
     }
     
-    //2. update
-    //3. delete
-    //4. search
-    //5. show
+    
+
+    //update
+    //delete
+    //search
+    //show
+    public List<Movie> listMovie(){
+        List<Movie> Movies = new ArrayList<>();
+        Connection connect = JDBC.ConnectJDBC.getConnection();
+        try {
+            PreparedStatement ps = connect.prepareStatement("SELECT * FROM Movies");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Movie m = new Movie(rs.getInt(table), 0, table, table, 0, true, 0, 0)
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }
