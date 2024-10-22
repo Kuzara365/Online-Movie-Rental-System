@@ -82,24 +82,50 @@ public class MoviesManagement {
             System.out.println("SQL error: " + e.getMessage());
         }
     }
-    
-    
 
     //update
+    public void updateMovie(){
+        Connection connection = JDBC.ConnectJDBC.getConnection();
+//        PreparedStatement ps = connection.prepareStatement("UPDATE movies SET ")
+    }
     //delete
     //search
     //show
-    public List<Movie> listMovie(){
+    public List<Movie> listMovie() {
         List<Movie> Movies = new ArrayList<>();
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
             PreparedStatement ps = connect.prepareStatement("SELECT * FROM Movies");
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                Movie m = new Movie(rs.getInt(table), 0, table, table, 0, true, 0, 0)
+            while (rs.next()) {
+                Movie m = new Movie(rs.getInt("movies_id"),
+                        rs.getInt("category_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getFloat("rating"),
+                        rs.getBoolean("availability"),
+                        rs.getDouble("rental_price"),
+                        rs.getInt("year_of_release")
+                );
+                Movies.add(m);
             }
+            return Movies;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public void showAll() {
+        List<Movie> movies = listMovie();
+        if (!movies.isEmpty()) {
+            printHeader();
+            for (Movie m : movies) {
+                System.out.format(table, m.toString());
+                printFooter();
+            }
+        } else {
+            System.out.println("EMPTY !!");
         }
     }
 }

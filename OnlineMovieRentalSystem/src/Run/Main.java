@@ -17,5 +17,7 @@ public class Main {
         ConnectJDBC.init();
         Movies.Movie m = new Movie(1, 2, "vvds", "ZDFvrevrse", 4, true, 23, 2);
         System.out.println(m);
+        
+        
     }
 }
