@@ -7,6 +7,7 @@ package Run;
 
 import JDBC.ConnectJDBC;
 import Movies.Movie;
+import Movies.MoviesManagement;
 
 /**
  *
@@ -16,7 +17,9 @@ public class Main {
     public static void main(String[] args) {
         ConnectJDBC.init();
         Movies.Movie m = new Movie(1, 2, "vvds", "ZDFvrevrse", 4, true, 23, 2);
-        System.out.println(m);
+        MoviesManagement mn = new MoviesManagement();
+        mn.showAll();
+        System.out.println(m.toString());
         
         
     }

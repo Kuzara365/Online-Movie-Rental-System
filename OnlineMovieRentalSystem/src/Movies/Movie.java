@@ -97,7 +97,7 @@ public class Movie {
                 //                + "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n"
                 "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-10d | %-14d |\n"
                 //                + "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n",
-                + MovieID, title, description, rating,
+                , MovieID, title, description, rating,
                 availability ? "Available" : "Not Available",
                 rentalPrice, categoryID, yearOfRelease
         );

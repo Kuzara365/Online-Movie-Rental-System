@@ -30,6 +30,17 @@ public class inputHelper {
             }
         }
     }
+    
+    public static int readIntAllowEnter(String question){
+        while (true) {            
+            try {
+                System.out.println(question);
+                String input = sc.nextLine();
+                
+            } catch (Exception e) {
+            }
+        }
+    }
 
     public static String readString(String question) {
         while (true) {
