@@ -92,14 +92,25 @@ public class Movie {
     @Override
     public String toString() {
         return String.format(
-                //                "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n"
-                //                + "| Movie ID   | Title              | Description    | Rating | Availability | Rent Price | CategoryID | Year of Release |\n"
-                //                + "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n"
-                "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-10d | %-14d |\n"
-                //                + "+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+\n",
-                , MovieID, title, description, rating,
+                "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-10d | %-14d |\n",
+                MovieID, title, description, rating,
                 availability ? "Available" : "Not Available",
                 rentalPrice, categoryID, yearOfRelease
         );
+    }
+
+    public Movie inputMovie() {
+        int movieId = inputHelper.readInt("Enter Movie's ID: ");
+        String title = inputHelper.readString("Enter Title: ");
+        String description = inputHelper.readString("Enter Description: ");
+        float rating = inputHelper.readFloat("Enter Rating: ");
+        boolean avail = inputHelper.readBoolean("Enter Status:\n"
+                + "1. True\n"
+                + "0. False\n"
+                + "Choice: ");
+        double rentalPrice = inputHelper.readDouble("Enter Rental's price: ");
+        int CategoryId = inputHelper.readInt("Enter Category's ID: ");
+        int yearOfRelease = inputHelper.readInt("Enter Year Of Release: ");
+        return new Movie(movieId, CategoryId, title, description, rating, avail, rentalPrice, yearOfRelease);
     }
 }
