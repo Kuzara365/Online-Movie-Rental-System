@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package CustomerRental;
 
 import JDBC.ConnectJDBC;
@@ -43,12 +38,11 @@ public class History {
             prepare.setString(1, customer);
             ResultSet result = prepare.executeQuery();
 
-            System.out.println("+-----------------------------------------------------------------------------------------------------+");
-            System.out.printf("|%-20s|%-50s|%-20s|%-20s|%-20s|%-20s|%-20s|%n", 
+            System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.printf("|%-20s|%-30s|%-30s|%-30s|%-20s|%-20s|%-20s|%n", 
                               "Customer", "Movie", "Rental Date", "Return Date", "Price", "Payback", "Change");
 
             while (result.next()) {
-                // Fetching data according to the right types
                 String user = result.getString("CUSTOMER");
                 String movie = result.getString("MOVIE");
                 String rentalDate = result.getString("RENTAL_DATE");

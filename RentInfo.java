@@ -11,20 +11,17 @@ public class RentInfo {
     protected String returnDate;
     protected double price;
     protected double Overdues;
-    protected double payback;
+    protected double pay;
     protected double change;
     
-    public RentInfo(String username, String movie, double price, double Overdues, double payback, double change){
+    public RentInfo(String username, String movie, double price){
         this.username = username;
         this.rentalDate = "" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) 
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        this.returnDate = "" + LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        this.returnDate = "" + LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
         this.movie = movie;
         this.price = price;
-        this.Overdues = Overdues;
-        this.payback = payback;
-        this.change = change;
     }
 
     public String getUsername() {
@@ -76,11 +73,11 @@ public class RentInfo {
     }
 
     public double getPayback() {
-        return payback;
+        return pay;
     }
 
-    public void setPayback(double payback) {
-        this.payback = payback;
+    public void setPay(double pay) {
+        this.pay = pay;
     }
 
     public double getChange() {

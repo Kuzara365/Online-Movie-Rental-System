@@ -15,7 +15,7 @@ public class CustomerMainPage {
             System.out.println("Here is a list of all available movies: ");
             MenuMovie menu = new MenuMovie();
             menu.showMovie();
-            int choose = input.InputInteger("1. Rent a movie.\n2. History.\n3. Logout.\nPlease choose: ");
+            int choose = input.InputInteger("1. Rent a movie.\n2. History.\n3. Return movie. \n4. Logout.\nPlease choose: ");
             switch(choose){
                 case 1:
                     System.out.println("1. Rent a movie.");
@@ -28,8 +28,14 @@ public class CustomerMainPage {
                     History history = new History();
                     history.history(customer);
                     break;
-                            
+                    
                 case 3:
+                    System.out.println("3. Return movie");
+                    ReturnMovie back = new ReturnMovie(customer);
+                    back.MainTOReturn();
+                    break;
+                            
+                case 4:
                     System.out.println("Logout");
                     option = false;
                     break;
