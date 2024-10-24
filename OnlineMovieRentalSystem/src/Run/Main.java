@@ -3,29 +3,45 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Run;
 
-import JDBC.ConnectJDBC;
-import Movies.Movie;
-import User.Login;
+ package Run;
 
 /**
  *
- * @author ngoct
+ * @author votha
  */
+
+import java.sql.SQLException;
+import JDBC.ConnectJDBC;
+import Login.CreateAccount;
+import Login.InputMain;
+import Login.Login;
+
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        InputMain input = new InputMain();
         ConnectJDBC.init();
-
-        // Test: not ready
-        Login login = new Login("admin", "admin");
-        login.printLoginDetails();
-        login.comparedWithDataBase();
-        login.logout();
-        //
-
-        Movies.Movie m = new Movie(1, 2, "vvds", "ZDFvrevrse", 4, true, 23, 2);
-        System.out.println(m);
-        
+        System.out.println("Hello, Welcome to our movie booking's website.");
+        boolean loop = true;
+        while(loop){
+        String haveAccount = input.InputString("Do you have an account yet?[Y/N]: ").toUpperCase();
+        switch(haveAccount){
+            case "Y":
+                loop = false;
+                Login login = new Login();
+                login.toLogin();
+                break;
+                
+            case "N":
+                loop = false;
+                CreateAccount acc = new CreateAccount();
+                acc.Account();
+                break;
+                
+            default:
+                System.out.println("Please only enter 'Y' or 'N'");
+        }
+       }
     }
 }
