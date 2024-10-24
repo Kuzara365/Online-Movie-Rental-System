@@ -35,11 +35,11 @@ public class ToRent {
     }
     
     public String getMovie(String movies){
-      String queryMovie = "SELECT * FROM Movies WHERE title = ?";
+      String queryMovie = "SELECT * FROM Movies WHERE title = ? AND availability = ?";
       try{
           prepare = connect.prepareStatement(queryMovie);
           prepare.setString(1, movies);
-          prepare.setBoolean(1, true);
+          prepare.setBigDecimal(2, BigDecimal.ZERO);
           result = prepare.executeQuery();
           if(result.next()){
               prepare = connect.prepareStatement("SELECT RETURN_DATE FROM CUSTOMER_INFO WHERE RETURN_DATE LIKE ?");
