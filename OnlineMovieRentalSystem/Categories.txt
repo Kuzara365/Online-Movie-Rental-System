@@ -1,6 +1,4 @@
-CREATE TABLE Categories(
-	category_id INT PRIMARY KEY,
-	genre VARCHAR(100),
-	language VARCHAR(50),
-	year INT
+CREATE TABLE Category(
+	category_id INT IDENTITY(1,1) PRIMARY KEY,
+	category_name VARCHAR(255)
 );

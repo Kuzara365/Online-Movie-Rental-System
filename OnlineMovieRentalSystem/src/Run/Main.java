@@ -6,21 +6,53 @@
 package Run;
 
 import JDBC.ConnectJDBC;
-import Movies.Movie;
-import Movies.MoviesManagement;
+import Movies.inputHelper;
 
 /**
  *
  * @author ngoct
  */
 public class Main {
+
     public static void main(String[] args) {
         ConnectJDBC.init();
-        Movies.Movie m = new Movie(1, 2, "vvds", "ZDFvrevrse", 4, true, 23, 2);
-        MoviesManagement mn = new MoviesManagement();
-        mn.showAll();
-        System.out.println(m.toString());
+        Menu menu = Menu.getInstance();
         
-        
+        int choice = 0;
+        do {
+            System.out.println("\n=================== Main Menu ===================");
+            System.out.println("1. Movie Management");
+            System.out.println("2. Category Management");
+            System.out.println("3. Movie Category Management");
+            System.out.println("4. Exit");
+            choice = inputHelper.readInt("Enter your choice: ");
+            try {
+                switch (choice) {
+                    case 1:
+                        menu.MovieMenu();
+                        break;
+
+                    case 2:
+                        menu.CategoryMenu();
+                        break;
+
+                    case 3:
+                        menu.MovieCategoryMenu();
+                        break;
+
+                    case 4:
+                        System.out.println("See youu!!");
+                        return;
+
+                    default:
+                        System.out.println("Invalid input. Try again 1..4!!");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+
+        } while (true);
+
     }
 }

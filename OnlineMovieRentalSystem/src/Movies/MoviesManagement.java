@@ -5,10 +5,13 @@
  */
 package Movies;
 
+import Category.Category;
+import MovieCategories.MovieCategoriesManagement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,26 +46,49 @@ public class MoviesManagement {
         System.out.println("+------------+-------------------+----------------+--------+--------------+------------+------------+----------------+");
     }
 
-    //1. add
-    public void insertMovie(Movie m) {
+    //add
+    public void insertMovie(Movie m, List<Integer> categoryIDs) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
-            PreparedStatement ps = connect.prepareStatement("INSERT INTO TABLE Movies(movies_id, title, description, rating, availability, rental_price, category_id, year_of_release) VALUES (?, ?, ?, ?, ?, ?, ?");
-            ps.setInt(0, m.getMovieID());
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO "
+                    + "Movie(title, description, rating, availability, rental_price, year_of_release) "
+                    + "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, m.getTitle());
             ps.setString(2, m.getDescription());
             ps.setFloat(3, m.getRating());
             ps.setBoolean(4, m.isAvailability());
-            ps.setInt(5, m.getCategoryID());
+            ps.setDouble(5, m.getRentalPrice());
             ps.setInt(6, m.getYearOfRelease());
 
             int count = ps.executeUpdate();
             if (count > 0) {
-                System.out.println("Add Movie Successfully!!");
+                ResultSet rs = ps.getGeneratedKeys();
+                int movieID = 0;
+                if (rs.next()) {
+                    movieID = rs.getInt(1);
+                }
+
+                if (movieID > 0 && categoryIDs != null && !categoryIDs.isEmpty()) {
+                    PreparedStatement categoryPS = connect.prepareStatement("INSERT INTO MovieCategory(movie_id, category_id) VALUES (?, ?)");
+                    for (int categoryID : categoryIDs) {
+                        categoryPS.setInt(1, movieID);
+                        categoryPS.setInt(2, categoryID);
+                        categoryPS.addBatch();
+                    }
+                    int[] querys = categoryPS.executeBatch();
+                    System.out.println("Added " + querys.length + "Categories to movie");
+
+                } else {
+                    System.out.println("Add Movie Successfully");
+                    System.out.println("But add Categories to Movie FAILED !");
+                }
+
                 System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
                 //show
+                MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
+                mcm.showMovieCategory();
             } else {
-                System.out.println("Add FAILED !!");
+                System.out.println("Add Movie FAILED !!");
             }
         } catch (SQLException e) {
             System.out.println("SQL error: " + e.getMessage());
@@ -75,7 +101,7 @@ public class MoviesManagement {
 
         try {
             int input = inputHelper.readInt("Enter Movie's ID: ");
-            PreparedStatement psInput = connection.prepareStatement("SELECT * FROM Movies WHERE movies_id = ?");
+            PreparedStatement psInput = connection.prepareStatement("SELECT * FROM Movie WHERE movie_id = ?");
             psInput.setInt(1, input);
             ResultSet rs = psInput.executeQuery();
 
@@ -85,34 +111,32 @@ public class MoviesManagement {
                 String oldDescription = rs.getString("description");
                 float oldRating = rs.getFloat("rating");
                 boolean oldAvail = rs.getBoolean("availability");
+                String oldAvailDisplay = oldAvail ? "Available" : "Not Available";
                 double oldRentalPrice = rs.getDouble("rental_price");
-                int oldCategoryId = rs.getInt("category_id");
                 int oldYearOfRelease = rs.getInt("year_of_release");
 
-                String title = inputHelper.readStringAllowEnter("Enter Title [" + oldTitle + "]): ", oldTitle);
-                String description = inputHelper.readStringAllowEnter("Enter Description [" + oldDescription + "]): ", oldDescription);
-                float rating = inputHelper.readFloatAllowEnter("Enter Rating [" + oldRating + "]): ", oldRating);
-                boolean avail = inputHelper.readBooleanAllowEnter("Enter Status [" + oldAvail + "]\n"
-                        + "1. True\n"
-                        + "0. False\n"
+                String title = inputHelper.readStringAllowEnter("Enter Title [" + oldTitle + "]: ", oldTitle);
+                String description = inputHelper.readStringAllowEnter("Enter Description [" + oldDescription + "]: ", oldDescription);
+                float rating = inputHelper.readFloatAllowEnter("Enter Rating [" + oldRating + "]: ", oldRating);
+                boolean avail = inputHelper.readBooleanAllowEnter("Enter Status [" + oldAvailDisplay + "]\n"
+                        + "1. Available\n"
+                        + "0. Not Available\n"
                         + "Choice: ", oldAvail);
-                double rentalPrice = inputHelper.readDoubleAllowEnter("Enter Rental's price [" + oldRentalPrice + "]): ", oldRentalPrice);
-                int categoryId = inputHelper.readIntAllowEnter("Enter Category's ID [" + oldCategoryId + "]): ", oldCategoryId);
-                int yearOfRelease = inputHelper.readIntAllowEnter("Enter Year Of Release [" + oldYearOfRelease + "]): ", oldYearOfRelease);
+                double rentalPrice = inputHelper.readDoubleAllowEnter("Enter Rental's price [" + oldRentalPrice + "]: ", oldRentalPrice);
+                int yearOfRelease = inputHelper.readIntAllowEnter("Enter Year Of Release [" + oldYearOfRelease + "]: ", oldYearOfRelease);
 
-                PreparedStatement psUpdate = connection.prepareStatement("UPDATE Movies "
+                PreparedStatement psUpdate = connection.prepareStatement("UPDATE Movie "
                         + "SET title = ?, description = ?, "
                         + "rating = ?, availability = ?, rental_price = ?, "
-                        + "category_id = ?, year_of_release = ? where movies_id = ?");
+                        + "year_of_release = ? WHERE movie_id = ?");
 
                 psUpdate.setString(1, title);
                 psUpdate.setString(2, description);
                 psUpdate.setFloat(3, rating);
                 psUpdate.setBoolean(4, avail);
                 psUpdate.setDouble(5, rentalPrice);
-                psUpdate.setInt(6, categoryId);
-                psUpdate.setInt(7, yearOfRelease);
-                psUpdate.setInt(8, input);
+                psUpdate.setInt(6, yearOfRelease);
+                psUpdate.setInt(7, input);
 
                 int count = psUpdate.executeUpdate();
                 if (count > 0) {
@@ -121,7 +145,7 @@ public class MoviesManagement {
 
                     showAll();
                 } else {
-                    System.out.println("Update failed!!");
+                    System.out.println("No changes were made!");
                 }
 
             } else {
@@ -139,7 +163,7 @@ public class MoviesManagement {
         try {
             Connection connection = JDBC.ConnectJDBC.getConnection();
             int movieId = inputHelper.readInt("Enter Movie's ID: ");
-            PreparedStatement ps = connection.prepareStatement("DELETE FROM Movies WHERE movies_id = ?");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM Movie WHERE movie_id = ?");
             ps.setInt(1, movieId);
 
             int count = ps.executeUpdate();
@@ -148,7 +172,7 @@ public class MoviesManagement {
                 System.out.println("*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-*-*-*--***-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*");
                 showAll();
             } else {
-                System.out.println("Delete failed!!");
+                System.out.println("Delete failed!!. Movie Id [" + movieId + "] not found.");
             }
 
         } catch (SQLException e) {
@@ -156,52 +180,30 @@ public class MoviesManagement {
         }
     }
 
-//    public int checkId(String table) {
-//        Connection connection = JDBC.ConnectJDBC.getConnection();
-//        try {
-//            int id = inputHelper.readInt("Enter ID " + table + ": ");
-//            PreparedStatement ps = connection.prepareStatement("SELECT COUNT (*) FROM " + table + "WHERE id = ?");
-//
-//        } catch (SQLException e) {
-//        }
-//        return 0;
-//    }
-    //search 
+    //search title, description
     public void searchMovie() {
         try {
             String keyword = inputHelper.readString("Enter keyword: ");
             Connection connection = JDBC.ConnectJDBC.getConnection();
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM"
-                    + "Movies WHERE title LIKE ?"
-                    + " OR description LIKE ?"
-                    + " OR rating = ?"
-                    + " OR availability = ?"
-                    + " OR rental_price = ?"
-                    + " OR year_of_release = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Movie WHERE title LIKE ? OR description LIKE ?");
 
-            float f = Float.parseFloat(keyword);
-            boolean b = Boolean.parseBoolean(keyword);
-            double d = Double.parseDouble(keyword);
-            int i = Integer.parseInt(keyword);
             ps.setString(1, "%" + keyword + "%");
             ps.setString(2, "%" + keyword + "%");
-            ps.setFloat(3, f);
-            ps.setBoolean(4, b);
-            ps.setDouble(5, d);
-            ps.setInt(6, i);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 printHeader();
                 do {
-                    System.out.println(rs.toString());
+                    System.out.printf("| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-14d |\n",
+                            rs.getInt("movie_id"), rs.getString("title"), rs.getString("description"),
+                            rs.getFloat("rating"), rs.getBoolean("availability") ? "Available" : "Not Available",
+                            rs.getDouble("rental_price"), rs.getInt("year_of_release")
+                    );
                     printFooter();
                 } while (rs.next());
             } else {
                 System.out.println("Not found!!");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input!!");
         } catch (SQLException se) {
             System.out.println("SQL Error: " + se.getMessage());
         } catch (Exception ex) {
@@ -214,11 +216,10 @@ public class MoviesManagement {
         List<Movie> Movies = new ArrayList<>();
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
-            PreparedStatement ps = connect.prepareStatement("SELECT * FROM Movies");
+            PreparedStatement ps = connect.prepareStatement("SELECT * FROM Movie");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Movie m = new Movie(rs.getInt("movies_id"),
-                        rs.getInt("category_id"),
+                Movie m = new Movie(
                         rs.getString("title"),
                         rs.getString("description"),
                         rs.getFloat("rating"),
@@ -228,23 +229,24 @@ public class MoviesManagement {
                 );
                 Movies.add(m);
             }
-            return Movies;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        return null;
+        return Movies;
     }
 
     public void showAll() {
         List<Movie> movies = listMovie();
-        if (!movies.isEmpty()) {
-            printHeader();
-            for (Movie m : movies) {
-                System.out.println(m.toString());
-                printFooter();
-            }
-        } else {
+
+        if (movies == null || movies.isEmpty()) {
             System.out.println("EMPTY !!");
+            return;
         }
+        printHeader();
+        for (Movie m : movies) {
+            System.out.println(m.toString());
+            printFooter();
+        }
+
     }
 }

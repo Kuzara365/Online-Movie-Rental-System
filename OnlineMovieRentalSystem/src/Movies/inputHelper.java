@@ -20,12 +20,11 @@ public class inputHelper {
         while (true) {
             try {
                 System.out.print(question);
-                return sc.nextInt();
+                int value = sc.nextInt();
+                sc.nextLine();
+                return value;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong Input. Try again !!");
-                sc.nextLine();
-            } catch (Exception ex) {
-                System.out.println("Error: " + ex.getMessage());
                 sc.nextLine();
             }
         }
@@ -34,7 +33,7 @@ public class inputHelper {
     public static int readIntAllowEnter(String question, int pre) {
         while (true) {
             try {
-                System.out.println(question);
+                System.out.print(question);
                 String input = sc.nextLine();
                 if (input.isEmpty()) {
                     return pre;
@@ -51,7 +50,7 @@ public class inputHelper {
 
     public static boolean readBooleanAllowEnter(String question, boolean pre) {
         while (true) {
-            System.out.println(question);
+            System.out.print(question);
             String input = sc.nextLine();
             if (input.isEmpty()) {
                 return pre;
@@ -70,7 +69,7 @@ public class inputHelper {
     public static double readDoubleAllowEnter(String question, double pre) {
         while (true) {
             try {
-                System.out.println(question);
+                System.out.print(question);
                 String input = sc.nextLine();
                 if (input.isEmpty()) {
                     return pre;
@@ -88,7 +87,7 @@ public class inputHelper {
     public static float readFloatAllowEnter(String question, float pre) {
         while (true) {
             try {
-                System.out.println(question);
+                System.out.print(question);
                 String input = sc.nextLine();
                 if (input.isEmpty()) {
                     return pre;
@@ -118,10 +117,12 @@ public class inputHelper {
             try {
                 System.out.print(question);
                 String s = sc.nextLine();
-                if (s != null) {
-                    System.out.println("Input again !!");
+                if (s.trim().isEmpty()) {
+                    System.out.println("Input cannot be empty. Please try again!");
+                } else {
+                    return s;
                 }
-                return s;
+                
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
@@ -136,13 +137,10 @@ public class inputHelper {
                 if (input > 0 && input <= 5) {
                     return input;
                 } else {
-                    System.out.println("Invalid input!!. Try again");
+                    System.out.println("Input must be between 0 and 5. Try again!");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Wrong datatype. Try again !!");
-                sc.nextLine();
-            } catch (Exception ex) {
-                System.out.println("Error: " + ex.getMessage());
                 sc.nextLine();
             }
         }
@@ -155,9 +153,6 @@ public class inputHelper {
                 return sc.nextDouble();
             } catch (InputMismatchException e) {
                 System.out.println("Wrong Input. Try again !!");
-                sc.nextLine();
-            } catch (Exception ex) {
-                System.out.println("Error: " + ex.getMessage());
                 sc.nextLine();
             }
         }
