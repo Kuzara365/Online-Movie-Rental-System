@@ -124,9 +124,8 @@ public class Menu {
                         return;
 
                     case 1:
-                        Category c = new Category();
-                        c.input();
-                        cm.addCategory(c);
+                        
+                        cm.addCategory();
                         break;
 
                     case 2:

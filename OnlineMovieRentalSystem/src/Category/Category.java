@@ -49,6 +49,7 @@ public class Category {
 
     public Category input() {
         String name = inputHelper.readString("Enter Category: ");
+        System.out.println("Name is : " + name);
         return new Category(name);
     }
     

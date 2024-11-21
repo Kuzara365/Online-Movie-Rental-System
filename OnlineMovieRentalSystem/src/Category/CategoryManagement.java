@@ -28,11 +28,22 @@ public class CategoryManagement {
         return instance;
     }
 
-    public void addCategory(Category c) {
+    public void addCategory() {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
+            String categoryName = inputHelper.readString("Enter Category: ");
+            String checkSql = "SELECT 1 FROM Category WHERE category_name = ?";
+            PreparedStatement psCheck = connect.prepareStatement(checkSql);
+            psCheck.setString(1, categoryName);
+            ResultSet rs = psCheck.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Category [" + categoryName+ "] already exists.");
+                return;
+            }
+
             PreparedStatement ps = connect.prepareStatement("INSERT INTO Category(category_name) VALUES(?)");
-            ps.setString(1, c.getCategoryName());
+            ps.setString(1, categoryName);
 
             int count = ps.executeUpdate();
             if (count > 0) {
@@ -80,6 +91,21 @@ public class CategoryManagement {
                 System.out.println("Delete successfully!!");
                 System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
                 showCategory();
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                PreparedStatement psReset = connect.prepareStatement("DBCC CHECKIDENT ('Category', RESEED, ?)");
+                psReset.execute();
             } else {
                 System.out.println("DELETE FAILED!!");
             }

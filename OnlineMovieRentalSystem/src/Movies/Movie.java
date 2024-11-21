@@ -13,6 +13,16 @@ public class Movie {
     public Movie() {
     }
 
+    public Movie(int MovieID, String title, String description, float rating, boolean availability, double rentalPrice, int yearOfRelease) {
+        this.MovieID = MovieID;
+        this.title = title;
+        this.description = description;
+        this.rating = rating;
+        this.availability = availability;
+        this.rentalPrice = rentalPrice;
+        this.yearOfRelease = yearOfRelease;
+    }
+
     public Movie(String title, String description, float rating, boolean availability, double rentalPrice, int yearOfRelease) {
         this.title = title;
         this.description = description;
@@ -81,7 +91,7 @@ public class Movie {
     @Override
     public String toString() {
         return String.format(
-                "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-14d |\n",
+                "| %-10s | %-20s | %-25s | %-6s | %-12s | %-10s | %-14s |\n",
                 MovieID, title, description, rating,
                 availability ? "Available" : "Not Available",
                 rentalPrice, yearOfRelease

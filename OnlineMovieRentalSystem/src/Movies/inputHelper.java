@@ -119,10 +119,9 @@ public class inputHelper {
                 String s = sc.nextLine();
                 if (s.trim().isEmpty()) {
                     System.out.println("Input cannot be empty. Please try again!");
-                } else {
-                    return s;
-                }
-                
+                    continue;
+                } 
+                return s;
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
