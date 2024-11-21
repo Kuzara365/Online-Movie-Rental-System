@@ -91,7 +91,7 @@ public class Movie {
     @Override
     public String toString() {
         return String.format(
-                "| %-10s | %-20s | %-25s | %-6s | %-12s | %-10s | %-14s |\n",
+                "| %-10s | %-20s | %-25s | %-6s | %-15s | %-10s | %-16s |\n",
                 MovieID, title, description, rating,
                 availability ? "Available" : "Not Available",
                 rentalPrice, yearOfRelease
@@ -101,7 +101,7 @@ public class Movie {
     public Movie inputMovie() {
         String title = inputHelper.readString("Enter Title: ");
         String description = inputHelper.readString("Enter Description: ");
-        float rating = inputHelper.readFloat("Enter Rating: ");
+        float rating = inputHelper.readFloat("Enter Rating(0 - 5): ");
         boolean avail = inputHelper.readBoolean("Enter Status:\n"
                 + "1. Available\n"
                 + "0. Not Available\n"

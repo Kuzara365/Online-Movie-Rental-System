@@ -36,14 +36,14 @@ public class MoviesManagement {
     String table = "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-10d | %-14d |\n";
 
     void printHeader() {
-    System.out.println("+------------+----------------------+---------------------------+--------+--------------+------------+------------------+");
-        System.out.println(String.format("| %-10s | %-20s | %-25s | %-6s | %-12s | %-10s | %-16s |\n",
+    System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
+        System.out.println(String.format("| %-10s | %-20s | %-25s | %-6s | %-15s | %-10s | %-16s |\n",
                 "Movie ID", "Title", "Description", "Rating", "Availability", "Rent Price", "Year of Release"));
-    System.out.println("+------------+----------------------+---------------------------+--------+--------------+------------+------------------+");
+    System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
     }
 
     void printFooter() {
-    System.out.println("+------------+----------------------+---------------------------+--------+--------------+------------+------------------+");
+    System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
     }
 
     //add
@@ -194,7 +194,7 @@ public class MoviesManagement {
             if (rs.next()) {
                 printHeader();
                 do {
-                    System.out.printf("| %-10d | %-20s | %-25s | %-6.1f | %-12s | %-10.2f | %-16d |\n",
+                    System.out.printf("| %-10d | %-20s | %-25s | %-6.1f | %-15s | %-10.2f | %-16d |\n",
                             rs.getInt("movie_id"), rs.getString("title"), rs.getString("description"),
                             rs.getFloat("rating"), rs.getBoolean("availability") ? "Available" : "Not Available",
                             rs.getDouble("rental_price"), rs.getInt("year_of_release")

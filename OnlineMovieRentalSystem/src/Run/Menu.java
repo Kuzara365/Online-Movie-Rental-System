@@ -60,7 +60,6 @@ public class Menu {
 
                     case 1:
                         Movie m = new Movie();
-                        m.inputMovie();
                         List<Integer> categoryIDs = new ArrayList<>();
                         while (true) {
                             cm.showCategory();
@@ -71,7 +70,7 @@ public class Menu {
                             categoryIDs.add(categoryid);
 
                         }
-                        mm.insertMovie(m, categoryIDs);
+                        mm.insertMovie(m.inputMovie(), categoryIDs);
                         break;
 
                     case 2:
@@ -124,8 +123,8 @@ public class Menu {
                         return;
 
                     case 1:
-                        
-                        cm.addCategory();
+                        Category c = new Category();
+                        cm.addCategory(c.input());
                         break;
 
                     case 2:
