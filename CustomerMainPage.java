@@ -14,7 +14,7 @@ public class CustomerMainPage {
         while(option){
             MenuMovie menu = new MenuMovie();
             menu.showMovie();
-            int choose = input.InputInteger("1. Rent a movie.\n2. History.\n3. Return movie. \n4. Delete account \n5. Logout.\nPlease choose: ");
+            int choose = input.InputInteger("1. Rent a movie.\n2. History.\n3. Search movie. \n4. Return movie. \n5. Delete account. \n6. Update account. \n7. Logout.\nPlease choose: ");
             switch(choose){
                 case 1:
                     System.out.println("1. Rent a movie.");
@@ -29,24 +29,36 @@ public class CustomerMainPage {
                     break;
                     
                 case 3:
-                    System.out.println("3. Return movie");
+                    Search search = new Search();
+                    search.search();
+                    System.out.println("");
+                    break;
+                    
+                case 4:
+                    System.out.println("4. Return movie");
                     ReturnMovie back = new ReturnMovie(customer);
                     back.MainTOReturn();
                     break;
                     
-                case 4:
-                    System.out.println("4. Delete account");
+                case 5:
+                    System.out.println("5. Delete account");
                     Delete delete = new Delete();
                     delete.delete(customer);
                     break;
+                    
+                case 6:
+                    System.out.println("6. Update account");
+                    Update update = new Update(customer);
+                    update.updatePage();
+                    break;
                             
-                case 5:
-                    System.out.println("Logout");
+                case 7:
+                    System.out.println("7. Logout");
                     option = false;
                     break;
                     
                 default:
-                    System.out.println("Please choose from 1 to 5.");
+                    System.out.println("Please choose from 1 to 7.");
             }
         }
     }
