@@ -29,7 +29,6 @@ public class CategoryManagement {
         return instance;
     }
     
-    MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
 
     public boolean isCategoryValid(int categoryID) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
@@ -100,6 +99,8 @@ public class CategoryManagement {
     public void deleteCategory() {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
+                MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
+
             int categoryID = inputHelper.readInt("Enter category ID to delete: ");
             mcm.deleteMovieCategory(categoryID, "category_id");
             PreparedStatement ps = connect.prepareStatement("DELETE FROM Category WHERE category_id = ?");

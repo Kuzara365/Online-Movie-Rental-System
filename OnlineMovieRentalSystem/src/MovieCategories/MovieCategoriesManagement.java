@@ -17,7 +17,6 @@ import java.util.List;
  *
  * @author ngoct
  */
-//viết hàm thêm và xóa 
 public class MovieCategoriesManagement {
 
     public static MovieCategoriesManagement instance;
@@ -29,9 +28,8 @@ public class MovieCategoriesManagement {
         return instance;
     }
 
-    CategoryManagement cm = CategoryManagement.getInstance();
-
     public void addMovieCategory(int id, List<Integer> categoryIDs) {
+        CategoryManagement cm = CategoryManagement.getInstance();
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
             if (categoryIDs != null && !categoryIDs.isEmpty()) {
