@@ -17,9 +17,9 @@ public class RentInfo {
     public RentInfo(String username, String movie, double price){
         this.username = username;
         this.rentalDate = "" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) 
-                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        this.returnDate = "" + LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern(" HH:mm:ss"));
+        this.returnDate = "" + LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern(" HH:mm:ss"));
         this.movie = movie;
         this.price = price;
     }

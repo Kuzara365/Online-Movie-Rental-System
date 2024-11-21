@@ -13,21 +13,23 @@ public class MenuMovie {
     ResultSet result = null;
     
     public void showMovie() {
-        String query = "SELECT * FROM Movies";
+        String query = "SELECT * FROM Movie";
         try {
-            System.out.println("Start");
             prepare = connect.prepareStatement(query);
-            System.out.println("Middle");
             result = prepare.executeQuery();
-            System.out.println("end");
-
+            
+            if(result == null){
+                System.out.println("The list of movie is empty!!!");
+            }else{
+            System.out.println("Here is a list of all available movies: ");
             System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
-            System.out.printf("|%-20s|%-30s|%-30s|%-20s|%-30s|%-20s|%-15s|%n", 
+            System.out.printf("|%-20s|%-30s|%-30s|%-20s|%-30s|%-20s|%-15s|\n", 
                               "MovieID", "Title", "Description", "Rating", "Availability", 
                               "Rental Price", "Year of Release");
-
+            System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
+            int count = 0;
             while (result.next()) {
-                int movieId = result.getInt("movies_id");
+                int movieId = result.getInt("movie_id");
                 String title = result.getString("title");
                 String description = result.getString("description");
                 BigDecimal rating = result.getBigDecimal("rating");
@@ -35,7 +37,7 @@ public class MenuMovie {
                 BigDecimal rentalPrice = result.getBigDecimal("rental_price");
                 int yearOfRelease = result.getInt("year_of_release");
 
-                System.out.printf("|%-20d|%-30s|%-60s|%-20.1f|%-30s|%-30.2f|%-20d|%n", 
+                System.out.printf("|%-20d|%-30s|%-30s|%-20.1f|%-30s|%-20.2f|%-15d|%n", 
                                   movieId, 
                                   title, 
                                   description, 
@@ -44,9 +46,11 @@ public class MenuMovie {
                                   rentalPrice.doubleValue(), 
                                   yearOfRelease);
             System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
+            count++;
             }
-            System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
-            
+            if(count > 1)
+              System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
+            } 
         } catch (SQLException e) {
             System.out.println("Connection error: " + e.getMessage());
         } finally {

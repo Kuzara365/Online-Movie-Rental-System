@@ -35,89 +35,103 @@ public class ReturnMovie {
     public void MainTOReturn(){       
         String movie = checkMovie();
         if(!movie.equals("Unavailable")){
-            double pay = Payment(movie);
+        //    double pay = Payment(movie);
             int missing = Late(movie);
-            Returning(movie, pay, missing);
+            System.out.println(missing);
+            Returning(movie, missing);
         }
     }
     
-    public int Late(String movie){
-        int count = 0;
-        try{
-            String today = "" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) 
-                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-            prepare = connect.prepareStatement("SELECT * FROM CUSTOMER_INFO WHERE CUSTOMER = ? AND MOVIE = ?");
-            prepare.setString(1, username);
-            prepare.setString(2, movie);
-            result = prepare.executeQuery();
-            if(result.next()){
-                String returnDate = result.getString("RETURN_DATE");
+public int Late(String movie) {
+    int count = 0;
+    try {
+        String today = "" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) 
+            + LocalDateTime.now().format(DateTimeFormatter.ofPattern(" HH:mm:ss"));
+        
+        // Query for the movie info
+        prepare = connect.prepareStatement("SELECT * FROM CUSTOMER_INFO WHERE CUSTOMER = ? AND MOVIE = ?");
+        prepare.setString(1, username);
+        prepare.setString(2, movie);
+        result = prepare.executeQuery();
+
+        if (result.next()) {
+            String returnDate = result.getString("RETURN_DATE");
+
+            // Check if RETURN_DATE is "Done" or a valid date
+            if (!returnDate.equals("Done")) {
                 LocalDateTime now = LocalDateTime.parse(today, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 LocalDateTime returndate = LocalDateTime.parse(returnDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                if(now.isAfter(returndate)){
+                if (now.isAfter(returndate)) {
                     count = (int) ChronoUnit.DAYS.between(returndate.toLocalDate(), now.toLocalDate());
                 }
+            } else {
+                System.out.println("The movie has already been returned.");
             }
-        }catch(SQLException e){
-            System.out.println("Connect error: " + e.getMessage());
         }
-        return count;
+    } catch (SQLException e) {
+        System.out.println("Connection error: " + e.getMessage());
     }
+    return count;
+}
+
     
-    public double Payment(String movie){
-        try{
-            prepare = connect.prepareStatement("SELECT PRICE FROM CUSTOMER_INFO WHERE CUSTOMER = ? AND MOVIE = ?");
-            prepare.setString(1, username);
-            prepare.setString(2, movie);
-            result = prepare.executeQuery();
-            if(result.next()){
-                return result.getDouble("PRICE");
-            }
-        }catch(SQLException e){
-            System.out.println("Connect error: " + e.getMessage());
-        }
-        return 0;
-    }
+//    public double Payment(String movie){
+//        try{
+//            prepare = connect.prepareStatement("SELECT PRICE FROM CUSTOMER_INFO WHERE CUSTOMER = ? AND MOVIE = ?");
+//            prepare.setString(1, username);
+//            prepare.setString(2, movie);
+//            result = prepare.executeQuery();
+//            if(result.next()){
+//                return result.getDouble("PRICE");
+//            }
+//        }catch(SQLException e){
+//            System.out.println("Connect error: " + e.getMessage());
+//        }
+//        return 0;
+//    }
     
-    public void Returning(String movie, double pay, int missing){
-        String queryMovie = "SELECT * FROM CUSTOMER_INFO WHERE CUSTOMER = ? AND MOVIE = ?";
-        
+    public void Returning(String movie, int missing){
+        System.out.println("Hello");
+        String queryMovie = "UPDATE CUSTOMER_INFO SET PRICE = ?, PAYBACK = ?, CHANGE = ?, RETURN_DATE = ? WHERE CUSTOMER = ? AND MOVIE = ?";
+        double price = 5 * missing;
+        double payback = 0;
+         while(payback < price){
+             payback = input.InputDouble("Please enter number for paying: ");
+         }
+         double change = price - payback;
+         System.out.printf("Your change is: %.2f \n", change);
         try{
-          prepare = connect.prepareStatement(queryMovie);
-          prepare.setString(1, username);
-          prepare.setString(2, movie);
-          result = prepare.executeQuery();
-          if(result.next()){
-              double price = result.getDouble("PRICE");
-              double change = 0;
-              double payback = 0;
-              if(missing != 0){
-                  while(true){
-                      payback = input.InputDouble("Pay the extra: ");
-                      if(payback >= price){
-                          change = payback - price;
-                          break;
-                      }
-                  }
-              }
-              prepare = connect.prepareStatement("UPDATE CUSTOMER_INFO SET PRICE = ?, PAYBACK = ?, CHANGE = ?, RETURN_DATE = ? WHERE CUSTOMER = ? AND MOVIE = ?");
+//          prepare = connect.prepareStatement(queryMovie);
+//          prepare.setString(1, username);
+//          prepare.setString(2, movie);
+//          result = prepare.executeQuery();
+//          if(result.next()){
+//              double price = result.getDouble("PRICE");
+//              double change = 0;
+//              double payback = 0;
+//              if(missing != 0){
+//                  while(true){
+//                      payback = input.InputDouble("Pay the extra: ");
+//                      if(payback >= price){
+//                          change = payback - price;
+//                          break;
+//                      }
+//                  }
+//              }
+              prepare = connect.prepareStatement(queryMovie);
               prepare.setDouble(1, price);
               prepare.setDouble(2, payback);
               prepare.setDouble(3, change);
               prepare.setString(4, "Done");
               prepare.setString(5, username);
               prepare.setString(6, movie);
-              prepare.executeQuery();
+              prepare.executeUpdate();
               
-              prepare = connect.prepareStatement("UPDATE Movies SET availability = ? WHERE title = ?");
-              prepare.setBigDecimal(1, BigDecimal.ONE);
+              prepare = connect.prepareStatement("UPDATE Movie SET availability = ? WHERE title = ?");
+              prepare.setInt(1, 1);
               prepare.setString(2, movie);
-              prepare.executeQuery();
+              prepare.executeUpdate();
               
-
-          }else{
-              System.out.println("Fail to return.");
-          }
         }catch(SQLException e){
             System.out.println("Connect error: " + e.getMessage());
         }
@@ -132,10 +146,10 @@ public class ReturnMovie {
           prepare.setString(2, movies);
           result = prepare.executeQuery();
           if(result.next()){
-              prepare = connect.prepareStatement("SELECT RETURN_DATE FROM CUSTOMER_INFO LIKE RETUR_DATE LIKE ?");
-              prepare.setString(1, "%Done%");
+              prepare = connect.prepareStatement("SELECT RETURN_DATE FROM CUSTOMER_INFO WHERE RETURN_DATE = ?");
+              prepare.setString(1, "Done");
               result = prepare.executeQuery();
-              if(result.next()){
+              if(!result.next()){
                   System.out.println("Your movie has been paid.");
                   return "Unavailable";
               }else

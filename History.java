@@ -20,7 +20,7 @@ public class History {
             if (result.next()) {
                 printHistory(username, query);
             } else {
-                System.out.println("Your history is empty.");
+                System.out.println("Your history is empty.\n");
             }
         } catch (SQLException e) {
             System.out.println("Can't connect: " + e.getMessage());
@@ -38,10 +38,11 @@ public class History {
             prepare.setString(1, customer);
             ResultSet result = prepare.executeQuery();
 
-            System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------------------+");
-            System.out.printf("|%-20s|%-30s|%-30s|%-30s|%-20s|%-20s|%-20s|%n", 
+            System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
+            System.out.printf("|%-20s|%-20s|%-20s|%-20s|%-10s|%-10s|%-10s|%n", 
                               "Customer", "Movie", "Rental Date", "Return Date", "Price", "Payback", "Change");
-
+            System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
+            int check = 0;
             while (result.next()) {
                 String user = result.getString("CUSTOMER");
                 String movie = result.getString("MOVIE");
@@ -51,7 +52,7 @@ public class History {
                 double payback = result.getDouble("PAYBACK");
                 double change = result.getDouble("CHANGE");
 
-                System.out.printf("|%-20s|%-50s|%-20s|%-20s|%-20.2f|%-20.2f|%-20.2f|%n", 
+                System.out.printf("|%-20s|%-20s|%-20s|%-20s|%-10.2f|%-10.2f|%-10.2f|%n", 
                                   user, 
                                   movie, 
                                   rentalDate, 
@@ -59,9 +60,11 @@ public class History {
                                   price, 
                                   payback, 
                                   change);
+            System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
+             check++;
             }
-
-            System.out.println("+-----------------------------------------------------------------------------------------------------+");
+            if(check < 1)
+              System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
         }catch(SQLException e){
             System.out.println("Connect error");
         }
