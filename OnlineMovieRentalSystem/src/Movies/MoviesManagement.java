@@ -37,16 +37,17 @@ public class MoviesManagement {
     String table = "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-10d | %-14d |\n";
 
     void printHeader() {
-        System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
-        System.out.println(String.format("| %-10s | %-20s | %-25s | %-6s | %-15s | %-10s | %-16s |\n",
+        System.out.println("+------------+----------------------+--------------------------------+--------+-----------------+------------+------------------+");
+        System.out.println(String.format("| %-10s | %-20s | %-30s | %-6s | %-15s | %-10s | %-16s |\n",
                 "Movie ID", "Title", "Description", "Rating", "Availability", "Rent Price", "Year of Release"));
-        System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
+        System.out.println("+------------+----------------------+--------------------------------+--------+-----------------+------------+------------------+");
     }
 
     void printFooter() {
-        System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
+        System.out.println("+------------+----------------------+--------------------------------+--------+-----------------+------------+------------------+");
     }
 
+    MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
     //add
     public void insertMovie(Movie m, List<Integer> categoryIDs) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
@@ -93,7 +94,7 @@ public class MoviesManagement {
 
                 System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
                 //show
-                MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
+                
                 mcm.showMovieCategory();
             } else {
                 System.out.println("Add Movie FAILED !!");
@@ -151,7 +152,7 @@ public class MoviesManagement {
                     System.out.println("Update Successfully!!");
                     System.out.println("*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-*-*-*--***-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*");
 
-                    showAll();
+                     mcm.showMovieCategory();
                 } else {
                     System.out.println("No changes were made!");
                 }
@@ -171,6 +172,9 @@ public class MoviesManagement {
         try {
             Connection connection = JDBC.ConnectJDBC.getConnection();
             int movieId = inputHelper.readInt("Enter Movie's ID: ");
+            
+            mcm.deleteMovieCategory(movieId, "movie_id");
+            
             PreparedStatement ps = connection.prepareStatement("DELETE FROM Movie WHERE movie_id = ?");
             ps.setInt(1, movieId);
 
@@ -178,7 +182,7 @@ public class MoviesManagement {
             if (count > 0) {
                 System.out.println("Delete Successfully !!");
                 System.out.println("*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-*-*-*--***-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*");
-                showAll();
+                 mcm.showMovieCategory();
             } else {
                 System.out.println("Delete failed!!. Movie Id [" + movieId + "] not found.");
             }
@@ -188,7 +192,7 @@ public class MoviesManagement {
         }
     }
 
-    //search title, description
+    //search title, description for Customer
     public void searchMovie() {
         try {
             String keyword = inputHelper.readString("Enter keyword: ");
@@ -202,7 +206,7 @@ public class MoviesManagement {
             if (rs.next()) {
                 printHeader();
                 do {
-                    System.out.printf("| %-10d | %-20s | %-25s | %-6.1f | %-15s | %-10.2f | %-16d |\n",
+                    System.out.printf("| %-10d | %-20s | %-30s | %-6.1f | %-15s | %-10.2f | %-16d |\n",
                             rs.getInt("movie_id"), rs.getString("title"), rs.getString("description"),
                             rs.getFloat("rating"), rs.getBoolean("availability") ? "Available" : "Not Available",
                             rs.getDouble("rental_price"), rs.getInt("year_of_release")

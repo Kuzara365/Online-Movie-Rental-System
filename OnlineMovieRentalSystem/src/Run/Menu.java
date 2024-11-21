@@ -45,9 +45,9 @@ public class Menu {
             System.out.println("==========================================");
             System.out.println("1. Add Movie");
             System.out.println("2. View All Movie");
-            System.out.println("3. Search Movie");
-            System.out.println("4. Update Movie");
-            System.out.println("5. Remove Movie");
+//            System.out.println("3. Search Movie");
+            System.out.println("3. Update Movie Infor");
+            System.out.println("4. Remove Movie");
             System.out.println("0. Exit");
             System.out.println("==========================================");
             choice = inputHelper.readInt("Enter your choice: ");
@@ -75,23 +75,23 @@ public class Menu {
                         break;
 
                     case 2:
-                        mm.showAll();
+                        mcm.showMovieCategory();
                         break;
+
+//                    case 3:
+//                        mm.searchMovie();
+//                        break;
 
                     case 3:
-                        mm.searchMovie();
-                        break;
-
-                    case 4:
                         mm.updateMovie();
                         break;
 
-                    case 5:
+                    case 4:
                         mm.removeMovie();
                         break;
-
+                        
                     default:
-                        System.out.println("Enter 0..5");
+                        System.out.println("Enter 0..4");
                         break;
 
                 }
@@ -151,50 +151,48 @@ public class Menu {
         }
     }
 
-    public void MovieCategoryMenu() {
-        int choice = 0;
-        while (true) {
-            System.out.println("===========================================");
-            System.out.println("         Movie Category Management         ");
-            System.out.println("===========================================");
-            System.out.println("0. Exit");
-            System.out.println("1. Show Movies with Categories");
-            System.out.println("2. Add Category to a Movie");
-            System.out.println("3. Remove Category from a Movie");
-            System.out.println("4. Edit Movies by Category");
-            System.out.println("===========================================");
-            choice = inputHelper.readInt("Enter your choice: ");
-
-            try {
-                switch (choice) {
-                    case 0:
-                        System.out.println("See youu!!");
-                        return;
-
-                    case 1:
-                        mcm.showMovieCategory();
-                        break;
-
-                    case 2:
-                        mcm.addMovieCategory();
-                        break;
-
-                    case 3:
-                        mcm.deleteMovieCategory();
-                        break;
-
-                    case 4:
-                        mcm.editMovieCategory();
-                        break;
-
-                    default:
-                        System.out.println("Only Input 0..4");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-
-        }
-    }
+    
+//    public void categoryEdit() {
+//        int choice = 0;
+//        while (true) {
+//            System.out.println("0. Exit");
+//            System.out.println("1. Add more categories to Movie");
+//            System.out.println("2. Delete Category to a Movie");
+//            choice = inputHelper.readInt("Enter your choice: ");
+//
+//            try {
+//                switch (choice) {
+//                    case 0:
+//                        System.out.println("See youu!!");
+//                        return;
+//
+//                    case 1:
+//                        mcm.showMovieCategory();
+//                        int moiveID = inputHelper.readInt("Enter Movie ID: ");
+//                        List<Integer> categoryIDs = new ArrayList<>();
+//                        while (true) {
+//                            cm.showCategory();
+//                            int categoryid = inputHelper.readInt("Enter Category ID to add (or 0 to exit): ");
+//                            if (categoryid == 0) {
+//                                break;
+//                            }
+//                            categoryIDs.add(categoryid);
+//                        }
+//                        mcm.addMovieCategory(moiveID, categoryIDs);
+//                        break;
+//
+//                    case 2:
+//                        mcm.deleteMovieCategory(inputHelper.readInt("Enter Category ID: "), "");
+//                        break;
+//
+//                    default:
+//                        System.out.println("Only Input 0..2");
+//                        break;
+//                }
+//            } catch (Exception e) {
+//                System.out.println("Error: " + e.getMessage());
+//            }
+//
+//        }
+//    }
 }

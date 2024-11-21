@@ -5,6 +5,7 @@
  */
 package Category;
 
+import MovieCategories.MovieCategoriesManagement;
 import Movies.inputHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +28,8 @@ public class CategoryManagement {
         }
         return instance;
     }
+    
+    MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
 
     public boolean isCategoryValid(int categoryID) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
@@ -97,8 +100,10 @@ public class CategoryManagement {
     public void deleteCategory() {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
+            int categoryID = inputHelper.readInt("Enter category ID to delete: ");
+            mcm.deleteMovieCategory(categoryID, "category_id");
             PreparedStatement ps = connect.prepareStatement("DELETE FROM Category WHERE category_id = ?");
-            ps.setInt(1, inputHelper.readInt("Enter category ID to delete: "));
+            ps.setInt(1, categoryID);
             int count = ps.executeUpdate();
             if (count > 0) {
                 System.out.println("Delete successfully!!");

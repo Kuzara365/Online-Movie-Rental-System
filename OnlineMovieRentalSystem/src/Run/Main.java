@@ -23,8 +23,7 @@ public class Main {
             System.out.println("\n=================== Main Menu ===================");
             System.out.println("1. Movie Management");
             System.out.println("2. Category Management");
-            System.out.println("3. Movie Category Management");
-            System.out.println("4. Exit");
+            System.out.println("0. Exit");
             choice = inputHelper.readInt("Enter your choice: ");
             try {
                 switch (choice) {
@@ -36,16 +35,12 @@ public class Main {
                         menu.CategoryMenu();
                         break;
 
-                    case 3:
-                        menu.MovieCategoryMenu();
-                        break;
-
-                    case 4:
+                    case 0:
                         System.out.println("See youu!!");
                         return;
 
                     default:
-                        System.out.println("Invalid input. Try again 1..4!!");
+                        System.out.println("Invalid input. Try again 0..2!!");
                         break;
                 }
             } catch (Exception e) {
