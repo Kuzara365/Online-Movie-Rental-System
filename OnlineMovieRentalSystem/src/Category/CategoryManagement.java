@@ -28,6 +28,19 @@ public class CategoryManagement {
         return instance;
     }
 
+    public boolean isCategoryValid(int categoryID) {
+        Connection connect = JDBC.ConnectJDBC.getConnection();
+        try {
+            PreparedStatement psCheck = connect.prepareStatement("SELECT 1 FROM Category WHERE category_id = ?");
+            psCheck.setInt(1, categoryID);
+            ResultSet rs = psCheck.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+
     public void addCategory(Category c) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {

@@ -6,6 +6,7 @@
 package Movies;
 
 import Category.Category;
+import Category.CategoryManagement;
 import MovieCategories.MovieCategoriesManagement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,19 +37,20 @@ public class MoviesManagement {
     String table = "| %-10d | %-17s | %-14s | %-6.1f | %-12s | %-10.2f | %-10d | %-14d |\n";
 
     void printHeader() {
-    System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
+        System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
         System.out.println(String.format("| %-10s | %-20s | %-25s | %-6s | %-15s | %-10s | %-16s |\n",
                 "Movie ID", "Title", "Description", "Rating", "Availability", "Rent Price", "Year of Release"));
-    System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
+        System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
     }
 
     void printFooter() {
-    System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
+        System.out.println("+------------+----------------------+---------------------------+--------+-----------------+------------+------------------+");
     }
 
     //add
     public void insertMovie(Movie m, List<Integer> categoryIDs) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
+        CategoryManagement cm = CategoryManagement.getInstance();
         try {
             PreparedStatement ps = connect.prepareStatement("INSERT INTO "
                     + "Movie(title, description, rating, availability, rental_price, year_of_release) "
@@ -62,6 +64,7 @@ public class MoviesManagement {
 
             int count = ps.executeUpdate();
             if (count > 0) {
+                //get movie_id for INSERT
                 ResultSet rs = ps.getGeneratedKeys();
                 int movieID = 0;
                 if (rs.next()) {
@@ -71,12 +74,17 @@ public class MoviesManagement {
                 if (movieID > 0 && categoryIDs != null && !categoryIDs.isEmpty()) {
                     PreparedStatement categoryPS = connect.prepareStatement("INSERT INTO MovieCategory(movie_id, category_id) VALUES (?, ?)");
                     for (int categoryID : categoryIDs) {
-                        categoryPS.setInt(1, movieID);
-                        categoryPS.setInt(2, categoryID);
-                        categoryPS.addBatch();
+                        if (cm.isCategoryValid(categoryID)) {
+                            categoryPS.setInt(1, movieID);
+                            categoryPS.setInt(2, categoryID);
+                            categoryPS.addBatch();
+                        } else {
+                            System.out.println("Category ID [" + categoryID + "] does not exist!!");
+                        }
+
                     }
                     int[] querys = categoryPS.executeBatch();
-                    System.out.println("Added " + querys.length + "Categories to movie");
+                    System.out.println("Added " + querys.length + " Categories to movie");
 
                 } else {
                     System.out.println("Add Movie Successfully");
