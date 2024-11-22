@@ -3,19 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Run;
+package Admin;
 
-import JDBC.ConnectJDBC;
 import Movies.inputHelper;
 
 /**
  *
  * @author ngoct
  */
-public class Main {
+public class Admin {
 
-    public static void main(String[] args) {
-        ConnectJDBC.init();
+    public void Admin(String username){
         Menu menu = Menu.getInstance();
         
         int choice = 0;
