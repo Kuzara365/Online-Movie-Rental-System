@@ -1,0 +1,5 @@
+CREATE TABLE Information(
+     CUSTOMER VARCHAR(50) PRIMARY KEY,
+	 EMAIL VARCHAR(50) DEFAULT 'Need to enter',
+	 INTRODUCE VARCHAR(50) DEFAULT 'Need to enter'
+);

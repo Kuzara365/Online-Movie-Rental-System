@@ -66,7 +66,7 @@ public class MovieCategoriesManagement {
                 int count = ps.executeUpdate();
                 if (count > 0) {
                     System.out.println("Delete Successfully!!");
-                    System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
+                    System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--***-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
                     break;
                 } else {
                     System.out.println("Not found ID [" + id + "]");
