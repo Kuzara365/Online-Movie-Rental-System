@@ -63,7 +63,7 @@ public class CategoryManagement {
             int count = ps.executeUpdate();
             if (count > 0) {
                 System.out.println("Add successfully!!");
-                System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--***-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
+                System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
                 showCategory();
             } else {
                 System.out.println("Add Category Failed!!");
@@ -85,7 +85,7 @@ public class CategoryManagement {
             int count = ps.executeUpdate();
             if (count > 0) {
                 System.out.println("Update Successfully!!");
-                System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--***-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
+                System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
                 showCategory();
             } else {
                 System.out.println("Update Failed !!");
@@ -108,7 +108,7 @@ public class CategoryManagement {
             int count = ps.executeUpdate();
             if (count > 0) {
                 System.out.println("Delete successfully!!");
-                System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--***-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
+                System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
                 showCategory();
             } else {
                 System.out.println("DELETE FAILED!!");

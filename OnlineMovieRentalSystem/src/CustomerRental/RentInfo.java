@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class RentInfo {
-
     protected String username;
     protected String movie;
     protected String rentalDate;
@@ -14,10 +13,10 @@ public class RentInfo {
     protected double Overdues;
     protected double pay;
     protected double change;
-
-    public RentInfo(String username, String movie, double price) {
+    
+    public RentInfo(String username, String movie, double price){
         this.username = username;
-        this.rentalDate = "" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        this.rentalDate = "" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) 
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern(" HH:mm:ss"));
         this.returnDate = "" + LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern(" HH:mm:ss"));
@@ -88,5 +87,5 @@ public class RentInfo {
     public void setChange(double change) {
         this.change = change;
     }
-
+    
 }
