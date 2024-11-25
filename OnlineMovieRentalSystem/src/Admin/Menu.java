@@ -45,7 +45,6 @@ public class Menu {
             System.out.println("==========================================");
             System.out.println("1. Add Movie");
             System.out.println("2. View All Movie");
-//            System.out.println("3. Search Movie");
             System.out.println("3. Update Movie Infor");
             System.out.println("4. Remove Movie");
             System.out.println("0. Exit");
@@ -77,10 +76,6 @@ public class Menu {
                     case 2:
                         mcm.showMovieCategory();
                         break;
-
-//                    case 3:
-//                        mm.searchMovie();
-//                        break;
 
                     case 3:
                         mm.updateMovie();

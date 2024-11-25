@@ -28,7 +28,6 @@ public class CategoryManagement {
         }
         return instance;
     }
-    
 
     public boolean isCategoryValid(int categoryID) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
@@ -46,9 +45,7 @@ public class CategoryManagement {
     public void addCategory(Category c) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
-//            String categoryName = inputHelper.readString("Enter Category: ");
-            String checkSql = "SELECT 1 FROM Category WHERE category_name = ?";
-            PreparedStatement psCheck = connect.prepareStatement(checkSql);
+            PreparedStatement psCheck = connect.prepareStatement("SELECT 1 FROM Category WHERE category_name = ?");
             psCheck.setString(1, c.getCategoryName());
             ResultSet rs = psCheck.executeQuery();
 
@@ -77,7 +74,15 @@ public class CategoryManagement {
     public void updateCategory() {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
+            showCategory();
             int catogoryID = inputHelper.readInt("Enter Category ID: ");
+//            PreparedStatement psCheck = connect.prepareStatement("SELECT 1 FROM Category where category_id = ?");
+//            ResultSet rsCheck = psCheck.executeQuery();
+            if (!isCategoryValid(catogoryID)) {
+                System.out.println("Category ID [" + catogoryID + "] isn't exist!!");
+                return;
+            }
+
             PreparedStatement ps = connect.prepareStatement("UPDATE Category SET category_name = ? WHERE category_id = ?");
             ps.setInt(2, catogoryID);
             ps.setString(1, inputHelper.readString("Enter new Category: "));
@@ -99,9 +104,16 @@ public class CategoryManagement {
     public void deleteCategory() {
         Connection connect = JDBC.ConnectJDBC.getConnection();
         try {
-                MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
 
+            showCategory();
             int categoryID = inputHelper.readInt("Enter category ID to delete: ");
+
+            if (!isCategoryValid(categoryID)) {
+                System.out.println("Not found ID[" + categoryID + "]");
+                return;
+            }
+
+            MovieCategoriesManagement mcm = MovieCategoriesManagement.getInstance();
             mcm.deleteMovieCategory(categoryID, "category_id");
             PreparedStatement ps = connect.prepareStatement("DELETE FROM Category WHERE category_id = ?");
             ps.setInt(1, categoryID);

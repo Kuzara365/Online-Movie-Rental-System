@@ -57,25 +57,14 @@ public class MovieCategoriesManagement {
 
     public void deleteMovieCategory(int id, String col) {
         Connection connect = JDBC.ConnectJDBC.getConnection();
-        do {
-            try {
-//                int CategoryId = inputHelper.readInt("Enter Movie ID to delete: ");
-                PreparedStatement ps = connect.prepareStatement("DELETE FROM MovieCategory WHERE " + col + " = ?");
-                ps.setInt(1, id);
 
-                int count = ps.executeUpdate();
-                if (count > 0) {
-                    System.out.println("Delete Successfully!!");
-                    System.out.println("***--*-*-*-*--*-***-*-*-*-*-*-*-*-*--*---****-*-*-*-*-*-*-******--*-*-*--*--*-*-*--*-*-*-***-****-*--*****----*--**");
-                    break;
-                } else {
-                    System.out.println("Not found ID [" + id + "]");
-                }
-            } catch (SQLException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        } while (true);
-
+        try {
+            PreparedStatement ps = connect.prepareStatement("DELETE FROM MovieCategory WHERE " + col + " = ?");
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public void showMovieCategory() {
