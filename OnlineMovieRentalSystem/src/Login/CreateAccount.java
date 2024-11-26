@@ -48,7 +48,7 @@ public class CreateAccount {
     }
     
  public String username() throws SQLException{
-    String query = "SELECT * FROM LOGIN_USER WHERE USERNAME = ?";
+    String query = "SELECT * FROM LoginUser WHERE username = ?";
     String username = "";
     
     try {
@@ -100,26 +100,8 @@ public class CreateAccount {
         return false;
     }
     
-//    public void SaveCreate(String username, String password, String filename){
-//        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))){
-//            writer.write(username + ", " + password);
-//            writer.newLine();
-//            writer.close();
-//            System.out.println("Create successful!");
-//            String answer = input.InputString("Do you want to continue to login?[Y/N]: ").toLowerCase();
-//            if(answer.equals("y")){
-//                Login login = new Login();
-//                login.toLogin();
-//            }else{
-//                System.exit(0);
-//            }
-//        }catch(IOException e){
-//            System.out.println("Create failed!");
-//        }
-//    }
-    
     public void insertData(String user, String username, String password) throws SQLException{
-        String query = "INSERT INTO LOGIN_USER (POSITION, USERNAME, PASS) VALUES (?, ?, ?)";
+        String query = "INSERT INTO LoginUser (position, username, password) VALUES (?, ?, ?)";
         try{
         Check = connect.prepareStatement(query);
         Check.setString(1, user);

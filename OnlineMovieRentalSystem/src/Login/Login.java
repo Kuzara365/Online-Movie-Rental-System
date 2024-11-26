@@ -34,45 +34,9 @@ public class Login {
             }
         }
         LoginRight(user);
-//        String username = input.InputString("Please enter username: ");
-//        String password = input.InputString("Please enter password: ");
-//        
-//         if(user.equals("Admin")){
-//                MoviesManagement manage = new MoviesManagement();
-//                LoginRight(username, password, "AdminAccount.txt", manage);
-//                
-//        }else if(user.equals("Customer")){
-//            CustomerMainPage cusRent = new CustomerMainPage();
-//            LoginRight(username, password, "CustomerAccount.txt", cusRent);
-//        }
     }
-
-//    public void LoginRight(String username, String password, String filename, Object right){
-//        try(BufferedReader read = new BufferedReader(new FileReader(filename))){
-//           String admin;
-//           boolean check = false;
-//           while((admin = read.readLine()) != null){
-//               String[] split = admin.split(", ");
-//               if(split[0].equals(username) && split[1].equals(password)){
-//                   if(right instanceof MoviesManagement){
-//                     //  manage.manageMovie(admin);
-//                       check = true;
-//                   }else if(right instanceof CustomerMainPage){
-//                       CustomerMainPage customer = new CustomerMainPage();
-//                       customer.Page(username);
-//                       check = true;
-//                   };
-//               }
-//           }
-//           if(check == false){
-//                   System.out.println("Your username or password might not correct.");
-//           }
-//        }catch(IOException e){
-//            System.out.println("Login failed!");
-//        }
-//    }
     public void LoginRight(String user) throws SQLException {
-        String query = "SELECT * FROM LOGIN_USER WHERE POSITION = ? AND USERNAME = ? AND PASS = ?";
+        String query = "SELECT * FROM LoginUser WHERE position = ? AND username = ? AND password = ?";
         try {
             Check = connect.prepareStatement(query);
             while (true) {
