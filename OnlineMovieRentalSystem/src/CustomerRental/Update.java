@@ -25,7 +25,7 @@ public class Update {
     public Update(String customer){
         this.customer = customer;
         try{
-          prepare = connect.prepareStatement("INSERT INTO Information(CUSTOMER) VALUES (?)");
+          prepare = connect.prepareStatement("INSERT INTO Information(username) VALUES (?)");
           prepare.setString(1, customer);
           prepare.executeUpdate();
         }catch(SQLException e){
@@ -34,7 +34,7 @@ public class Update {
     }
     
     public void updatePage(){
-        String query = "SELECT * FROM Information WHERE CUSTOMER = ?";
+        String query = "SELECT * FROM Information WHERE username = ?";
         try {
             prepare = connect.prepareStatement(query);
             prepare.setString(1, customer);
@@ -47,9 +47,9 @@ public class Update {
             System.out.println("+----------------------------------------------------------------------------------+");
             int count = 0;
             while (result.next()) {
-                String customer = result.getString("CUSTOMER");
-                String email = result.getString("EMAIL");
-                String introduction = result.getString("INTRODUCE");
+                String customer = result.getString("username");
+                String email = result.getString("email");
+                String introduction = result.getString("introduction");
 
                 System.out.printf("|%-20s|%-30s|%-30s|\n", 
                                   customer, 
@@ -99,7 +99,7 @@ public class Update {
         System.out.print("Introduce yourself: ");
         String introduce = sc.nextLine();
         try{
-          prepare = connect.prepareStatement("UPDATE Information SET EMAIL = ?, INTRODUCE = ? WHERE CUSTOMER = ?");
+          prepare = connect.prepareStatement("UPDATE Information SET email = ?, introduction = ? WHERE username = ?");
           prepare.setString(1, email);
           prepare.setString(2, introduce);
           prepare.setString(3, customer);

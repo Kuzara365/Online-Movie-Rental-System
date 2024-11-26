@@ -17,7 +17,7 @@ public class Delete {
     PreparedStatement prepare = null;
     ResultSet result = null;
     public void delete(String customer){
-        String removeAccount = "DELETE FROM LOGIN_USER WHERE USERNAME = ?";
+        String removeAccount = "DELETE FROM LoginUser WHERE username = ?";
          while(true){
         String haveAccount = input.InputString("Delete your account?[Y/N]: ").toUpperCase();
         switch(haveAccount){

@@ -23,7 +23,7 @@ public class Search {
     ResultSet result = null;
     public void search() throws SQLException{
         String search = input.InputString("Please enter the movie you want to search: ");
-        String query = "SELECT * FROM Movie WHERE Title LIKE ?";
+        String query = "SELECT * FROM Movie WHERE title LIKE ?";
         try{
             prepare = connect.prepareStatement(query);
             prepare.setString(1, "%" + search + "%");

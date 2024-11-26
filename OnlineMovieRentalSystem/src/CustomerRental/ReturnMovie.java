@@ -48,13 +48,13 @@ public int Late(String movie) {
         String today = "" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) 
             + LocalDateTime.now().format(DateTimeFormatter.ofPattern(" HH:mm:ss"));
         
-        prepare = connect.prepareStatement("SELECT * FROM HISTORY WHERE CUSTOMER = ? AND MOVIE = ?");
+        prepare = connect.prepareStatement("SELECT * FROM History WHERE username = ? AND title = ?");
         prepare.setString(1, username);
         prepare.setString(2, movie);
         result = prepare.executeQuery();
         int count = 0;
         while(result.next()) {
-            String returnDate = result.getString("RETURN_DATE");
+            String returnDate = result.getString("returnDate");
             if (!returnDate.equals("Done")) {
                 LocalDateTime now = LocalDateTime.parse(today, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 LocalDateTime returndate = LocalDateTime.parse(returnDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -78,7 +78,7 @@ public int Late(String movie) {
 }
     
     public void Returning(String movie, int missing){
-        String queryMovie = "UPDATE HISTORY SET PRICE = PRICE + ?, PAYBACK = PAYBACK + ?, CHANGE = CHANGE + ?, RETURN_DATE = ? WHERE CUSTOMER = ? AND MOVIE = ? AND RETURN_DATE != ?";
+        String queryMovie = "UPDATE History SET returnDate = ?, extra = extra + ?, extrapay = extrapay + ?, totalchange = totalchange + ?, total = total + ? WHERE username = ? AND title = ? AND returnDate != ?";
         double price = 5 * missing;
         double payback = 0;
         double change = 0;
@@ -94,13 +94,15 @@ public int Late(String movie) {
         }
         try{
               prepare = connect.prepareStatement(queryMovie);
-              prepare.setDouble(1, price);
-              prepare.setDouble(2, payback);
-              prepare.setDouble(3, change);
-              prepare.setString(4, "Done");
-              prepare.setString(5, username);
-              prepare.setString(6, movie);
-              prepare.setString(7, "Done");
+              prepare.setString(1, "Done");
+              prepare.setDouble(2, price);
+              prepare.setDouble(3, payback);
+              prepare.setDouble(4, change);
+              prepare.setDouble(5, price);
+              prepare.setString(6, username);
+              prepare.setString(7, movie);
+              prepare.setString(8, "Done");
+              
               prepare.executeUpdate();
               
               prepare = connect.prepareStatement("UPDATE Movie SET availability = ? WHERE title = ?");
@@ -114,15 +116,15 @@ public int Late(String movie) {
     }
     
     public String checkMovie(){
-      String queryMovie = "SELECT * FROM HISTORY WHERE CUSTOMER = ? AND MOVIE = ?";
+      String queryMovie = "SELECT * FROM History WHERE username = ? AND title = ?";
       String movies = input.InputString("Please enter the movie you want to return: ");
       try{
           prepare = connect.prepareStatement(queryMovie);
           prepare.setString(1, username);
           prepare.setString(2, movies);
           result = prepare.executeQuery();
-          if(result != null){
-              prepare = connect.prepareStatement("SELECT RETURN_DATE FROM HISTORY WHERE RETURN_DATE = ? AND CUSTOMER = ? AND MOVIE = ?");
+          if(result.next()){
+              prepare = connect.prepareStatement("SELECT returnDate FROM History WHERE returnDate = ? AND username = ? AND title = ?");
               prepare.setString(1, "Done");
               prepare.setString(2, username);
               prepare.setString(3, movies);
@@ -130,7 +132,7 @@ public int Late(String movie) {
               if(result == null){
                   System.out.println("Your movie has been paid.");
                   return "Unavailable";
-              }else
+              }else        
                   return movies;
           }else{
               System.out.println("Your chosen movie is unavailable");

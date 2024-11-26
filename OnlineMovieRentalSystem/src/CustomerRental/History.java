@@ -11,7 +11,7 @@ public class History {
     PreparedStatement prepare = null;
 
     public void history(String username) throws SQLException {
-        String query = "SELECT * FROM HISTORY WHERE CUSTOMER = ?";
+        String query = "SELECT * FROM History WHERE username = ?";
         try {
             prepare = connect.prepareStatement(query);
             prepare.setString(1, username);
@@ -37,34 +37,41 @@ public class History {
               prepare = connect.prepareStatement(query);
             prepare.setString(1, customer);
             ResultSet result = prepare.executeQuery();
-
-            System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
-            System.out.printf("|%-20s|%-20s|%-20s|%-20s|%-10s|%-10s|%-10s|%n", 
-                              "Customer", "Movie", "Rental Date", "Return Date", "Price", "Payback", "Change");
-            System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.printf("|%-20s|%-20s|%-20s|%-20s|%-10s|%-10s|%-10s|%-11s|%-14s|%-10s|%-11s|%n", 
+                              "Customer", "Movie", "Rental Date", "Return Date", "Price", "Payback", "Change", "Extra Price", "Extra Payback", "Change", "Total Price");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
             int check = 0;
             while (result.next()) {
-                String user = result.getString("CUSTOMER");
-                String movie = result.getString("MOVIE");
-                String rentalDate = result.getString("RENTAL_DATE");
-                String returnDate = result.getString("RETURN_DATE");
-                double price = result.getDouble("PRICE");
-                double payback = result.getDouble("PAYBACK");
-                double change = result.getDouble("CHANGE");
+                String user = result.getString("username");
+                String movie = result.getString("title");
+                String rentalDate = result.getString("rentalDate");
+                String returnDate = result.getString("ReturnDate");
+                double price = result.getDouble("price");
+                double payback = result.getDouble("payback");
+                double change = result.getDouble("paychange");
+                double extraPrice = result.getDouble("extra");
+                double extra = result.getDouble("extrapay");
+                double totalchange = result.getDouble("totalchange");
+                double total = result.getDouble("total");
 
-                System.out.printf("|%-20s|%-20s|%-20s|%-20s|%-10.2f|%-10.2f|%-10.2f|%n", 
+                System.out.printf("|%-20s|%-20s|%-20s|%-20s|%-10.2f|%-10.2f|%-10.2f|%-11.2f|%-14.2f|%-10.2f|%-11.2f|%n", 
                                   user, 
                                   movie, 
                                   rentalDate, 
                                   returnDate, 
                                   price, 
                                   payback, 
-                                  change);
-            System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
+                                  change,
+                                  extraPrice,
+                                  extra,
+                                  totalchange,
+                                  total);
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
              check++;
             }
             if(check < 1)
-              System.out.println("+--------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
         }catch(SQLException e){
             System.out.println("Connect error");
         }

@@ -59,7 +59,7 @@ public class ToRent {
     
 public void Renting(String username, String movie, String moviesId){
     double price = getPrice(movie);
-    String queryRental = "INSERT INTO HISTORY (CUSTOMER, MOVIE, RENTAL_DATE, RETURN_DATE, PRICE, PAYBACK, CHANGE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String queryRental = "INSERT INTO History (username, title, rentalDate, ReturnDate, price, payback, paychange, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     RentInfo info = new RentInfo(username, movie, price);
     System.out.printf("Your price of the move \"%s\" is %.2f\n", movie, price);
     System.out.printf("Please make sure to return the movie in %s, or you will have to pay extra 5 per day late", info.getReturnDate());
@@ -79,6 +79,7 @@ public void Renting(String username, String movie, String moviesId){
         prepare.setDouble(5, price);
         prepare.setDouble(6, pay);
         prepare.setDouble(7, change);
+        prepare.setDouble(8, price);
         prepare.executeUpdate();
         System.out.println("You have successfully paid for renting the movie. Have a nice movie!");
 
