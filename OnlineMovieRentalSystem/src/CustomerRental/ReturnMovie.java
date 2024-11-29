@@ -78,7 +78,7 @@ public int Late(String movie) {
 }
     
     public void Returning(String movie, int missing){
-        String queryMovie = "UPDATE History SET returnDate = ?, extra = extra + ?, extrapay = extrapay + ?, totalchange = totalchange + ?, total = total + ? WHERE username = ? AND title = ? AND returnDate != ?";
+        String queryMovie = "UPDATE History SET returnDate = ?, extra = extra + ?, extrapay = extrapay + ?, extrachange = extrachange + ?, total = total + ? WHERE username = ? AND title = ? AND returnDate != ?";
         double price = 5 * missing;
         double payback = 0;
         double change = 0;

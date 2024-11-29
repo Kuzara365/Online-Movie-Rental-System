@@ -52,7 +52,7 @@ public class History {
                 double change = result.getDouble("paychange");
                 double extraPrice = result.getDouble("extra");
                 double extra = result.getDouble("extrapay");
-                double totalchange = result.getDouble("totalchange");
+                double extrachange = result.getDouble("extrachange");
                 double total = result.getDouble("total");
 
                 System.out.printf("|%-20s|%-20s|%-20s|%-20s|%-10.2f|%-10.2f|%-10.2f|%-11.2f|%-14.2f|%-10.2f|%-11.2f|%n", 
@@ -65,7 +65,7 @@ public class History {
                                   change,
                                   extraPrice,
                                   extra,
-                                  totalchange,
+                                  extrachange,
                                   total);
             System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+");
              check++;

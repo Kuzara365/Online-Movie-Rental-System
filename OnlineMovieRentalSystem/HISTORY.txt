@@ -8,7 +8,7 @@ CREATE TABLE History(
 	paychange DECIMAL(6, 2),
         extra DECIMAL(6, 2) DEFAULT 0,
 	extrapay DECIMAL(6, 2) DEFAULT 0,
-	totalchange DECIMAL(6, 2) DEFAULT 0,
+	extrachange DECIMAL(6, 2) DEFAULT 0,
 	total DECIMAL(6, 2),
     FOREIGN KEY (username) REFERENCES LoginUser(username) ON DELETE CASCADE
 );
